@@ -1,10 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
+import * as express from 'express';
 import { ValidationPipe as NestValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
   app.useGlobalPipes(
     new NestValidationPipe({
@@ -31,5 +36,6 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`Server running on http://localhost:${port}`);
   console.log(`Swagger docs: http://localhost:${port}/api/docs`);
+  console.log(`Uploaded files served at: http://localhost:${port}/uploads`);
 }
 bootstrap();
