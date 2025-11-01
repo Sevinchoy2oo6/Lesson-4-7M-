@@ -23,22 +23,22 @@ export class UserService {
     return await this.userRepo.find();
   }
 
-  //Get user by ID
-  async findOne(id: number): Promise<User> {
+  //Get user by ID (UUID)
+  async findOne(id: string): Promise<User> {
     const user = await this.userRepo.findOne({ where: { id } });
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
     return user;
   }
 
   //Update user
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
     Object.assign(user, updateUserDto);
     return await this.userRepo.save(user);
   }
 
   //Delete user
-  async remove(id: number): Promise<{ message: string }> {
+  async remove(id: string): Promise<{ message: string }> {
     const user = await this.findOne(id);
     await this.userRepo.remove(user);
     return { message: `User with ID ${id} deleted successfully` };

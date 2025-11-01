@@ -9,20 +9,21 @@ import {
 import { User } from './user.entity';
 import { Post } from './post.entity';
 
-@Entity('comments')
-export class Comment {
+@Entity('highlights')
+export class Highlight {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'text' })
-  content: string;
+  text: string; //ajratilgan matn
 
-  //Har bir comment bitta userga tegishli
-  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
+  @Column({ type: 'varchar', nullable: true })
+  note?: string; //foydalanuvchi yozgan eslatma (optional)
+
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  //Har bir comment bitta postga tegishli
-  @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Post, { onDelete: 'CASCADE' })
   post: Post;
 
   @CreateDateColumn({ name: 'created_at' })

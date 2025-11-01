@@ -17,7 +17,7 @@ export class CommentService {
   ) {}
 
   async create(createCommentDto: CreateCommentDto): Promise<Comment> {
-    // Avval post borligini tekshiramiz
+    //Avval post borligini tekshirish
     const post = await this.postRepo.findOne({
       where: { id: createCommentDto.postId },
     });
@@ -25,10 +25,10 @@ export class CommentService {
       throw new NotFoundException('Post not found');
     }
 
-    // Yangi comment yaratish
+    //Yangi comment yaratish
     const comment = this.commentRepo.create({
       content: createCommentDto.content,
-      post: post, // bu joy muhim — to‘liq post obyektini beramiz
+      post: post, 
     });
 
     return this.commentRepo.save(comment);
